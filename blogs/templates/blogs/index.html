@@ -1,0 +1,13 @@
+{% extends 'blogs/base.html' %}
+
+{% block page_header %}
+  <div class="jumbotron">
+  	<h1 class="display-3">Say whatever you want here.</h1>
+
+  	<p class="lead">Write your own blog, and pick a specific topic you want to share with people. It
+  		could be anything on this platform.</p>
+
+    <a class="btn btn-lg btn-primary" href="{% url 'users:register' %}" role="button">
+    	Register Now &raquo;</a>
+
+{% endblock page_header %}

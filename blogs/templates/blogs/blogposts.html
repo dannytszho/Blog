@@ -1,0 +1,18 @@
+{% extends 'blogs/base.html' %}
+
+{% block page_header %}
+  <h1>Blog Posts</h1>
+{% endblock page_header %}
+
+{% block content %}
+  <ul>
+  	{% for blogpost in blogposts %}
+  	  <li><h4>
+  	    <a href="{% url 'blogs:blogpost' blogpost.id %}">{{ blogpost }}</a>
+  	  </h4></li>
+  	{% empty %}
+  	  <li><h3>No posts have been added</h3></li>
+  	{% endfor %}
+  </ul>
+  <h5><a href="{% url 'blogs:new_blogpost' %}">Add a new topic</a></h5>
+{% endblock content %}
