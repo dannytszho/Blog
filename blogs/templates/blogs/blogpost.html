@@ -1,7 +1,10 @@
 {% extends 'blogs/base.html' %}
 
 {% block page_header %}
-  <h3>{{ blogpost }}</h3>
+  <div style="clear: both">
+    <h3>{{ blogpost }}</h3> - <small><a href="{% url 'blogs:delete_blogpost' blogpost.id %}">
+          delete topic</a></small>
+  </div>
 {% endblock page_header %}
 
 {% block content %}
@@ -14,14 +17,16 @@
       <h4 class="card-header">
         {{ entry.date_added|date:'M d,Y H:i' }}
         <small><a href="{% url 'blogs:edit_entry' entry.id %}">
-          edit post</a></small>
+          edit post</a></small> - 
+        <small><a href="{% url 'blogs:delete_entry' entry.id %}">
+          delete post</a></small>
       </h4>
       <div class="card-body">
         {{ entry.text|linebreaks }}
       </div>
     </div>
   {% empty %}
-    <p>There are no entries for this blogpost</p>>
+    <p>There are no entries for this blogpost</p>
   {% endfor %}
 
 {% endblock content %}

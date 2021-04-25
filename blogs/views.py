@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.http import Http404
 
 from .models import BlogPost, Entry
@@ -63,6 +64,22 @@ def new_blogpost(request):
 	return render(request, 'blogs/new_blogpost.html', context)
 
 @login_required
+def delete_blogpost(request, blogpost_id):
+	blogpost = get_object_or_404(BlogPost, id=blogpost_id)
+	check_topic_owner(blogpost.owner, request)
+
+	if request.method == 'POST':
+		blogpost.delete()
+		messages.success(request, "Topic successfully deleted!")
+		return redirect('blogs:blogposts')
+
+	# Display a blank or invalid form.
+	context = {'blogpost': blogpost}
+	return render(request, 'blogs/delete_blogpost.html', context)
+
+
+
+@login_required
 def new_entry(request, blogpost_id):
 	"""Add a new entry for a particular blogpost."""
 	blogpost = get_object_or_404(BlogPost, id=blogpost_id)
@@ -103,6 +120,21 @@ def edit_entry(request, entry_id):
 
 	context = {'entry': entry, 'blogpost': blogpost, 'form': form}
 	return render(request, 'blogs/edit_entry.html', context)
+
+@login_required
+def delete_entry(request, entry_id):
+	entry = get_object_or_404(Entry, id=entry_id)
+	blogpost = entry.blogpost
+	check_topic_owner(blogpost.owner, request)
+
+	if request.method == 'POST':
+		entry.delete()
+		messages.success(request, "Post successfully deleted!")
+		return redirect('blogs:blogpost', blogpost_id=blogpost.id)
+
+	# Display a blank or invalid form.
+	context = {'entry': entry, 'blogpost': blogpost}
+	return render(request, 'blogs/delete_entry.html', context)
 
 def check_topic_owner(owner, request):
 	if owner != request.user:

@@ -1,0 +1,21 @@
+{% extends 'blogs/base.html' %}
+{% load bootstrap4 %}
+
+{% block page_header %}
+  <h3><a href="{% url 'blogs:blogpost' blogpost.id %}">{{ blogpost }}</a>
+{% endblock page_header %}
+
+{% block content %}
+
+  <p>Delete post</p>
+  <br/>
+  <form action="{% url 'blogs:delete_entry' entry.id %}" method="POST" class="form">
+    {% csrf_token %}
+    {% buttons %}
+    <!--{{ form.as_p }}-->
+      <strong>Are you sure?!</strong><br/> 
+      <button name="submit" class="btn btn-primary">Delete Post!</button>
+    {% endbuttons %}
+
+  </form>
+{% endblock content %}

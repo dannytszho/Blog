@@ -5,6 +5,13 @@
 {% endblock page_header %}
 
 {% block content %}
+  {% if messages %}
+  <class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+  {% endif %}
+
   <ul>
   	{% for blogpost in blogposts %}
   	  <li><h4>
