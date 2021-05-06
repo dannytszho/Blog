@@ -18,6 +18,7 @@ class Entry(models.Model):
 	blogpost = models.ForeignKey(BlogPost, on_delete=models.CASCADE)
 	text = models.TextField()
 	date_added = models.DateTimeField(auto_now_add=True)
+	likes = models.ManyToManyField(User, related_name="blog_post")
 
 	class Meta:
 		verbose_name_plural = 'Entries'

@@ -15,7 +15,7 @@
   <ul>
   	{% for blogpost in blogposts %}
   	  <li><h4>
-  	    <a href="{% url 'blogs:blogpost' blogpost.id %}">{{ blogpost }}</a>
+  	    <a href="{% url 'blogs:blogpost' blogpost.id %}">{{ blogpost.text }} - <small>{{ blogpost.owner }}</small></a>
   	  </h4></li>
   	{% empty %}
   	  <li><h3>No posts have been added</h3></li>

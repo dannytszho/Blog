@@ -2,8 +2,9 @@
 
 {% block page_header %}
   <div style="clear: both">
-    <h3>{{ blogpost }}</h3> - <small><a href="{% url 'blogs:delete_blogpost' blogpost.id %}">
-          delete topic</a></small>
+    <h3>{{ blogpost }}</h3><small>By: {{ blogpost.owner }} - {{ blogpost.date_added }}</small>
+    <br/>
+    <small><a href="{% url 'blogs:delete_blogpost' blogpost.id %}">delete topic</a></small>
   </div>
 {% endblock page_header %}
 
@@ -28,5 +29,16 @@
   {% empty %}
     <p>There are no entries for this blogpost</p>
   {% endfor %}
+
+  <br/><br/>
+  <a href="{% url 'blogs:blogposts' %}" class="btn btn-primary">Back</a>
+
+  <br/><br/>
+  <hr>
+  <br/>
+  <form action="{% url 'blogs:like_post' blogpost.id %}"method="POST">
+    {% csrf_token %}
+      <button type="submit", name="post_id", value="{{ blogpost.id }}", class="btn btn-primary btn-sm">Like</button>
+  </form>
 
 {% endblock content %}

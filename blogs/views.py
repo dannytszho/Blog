@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
+from django.urls import reverse
 
 from .models import BlogPost, Entry
 from .forms import BlogPostForm, EntryForm
@@ -26,7 +27,7 @@ def _get_topics_for_user(user):
 
 def blogposts(request):
 	"""Show all blogposts."""
-	blogposts = _get_topics_for_user(request.user).order_by('date_added')
+	blogposts = _get_topics_for_user(request.user).order_by('-date_added')
 	context = {'blogposts': blogposts}
 	return render(request, 'blogs/blogposts.html', context)
 
@@ -76,6 +77,11 @@ def delete_blogpost(request, blogpost_id):
 	# Display a blank or invalid form.
 	context = {'blogpost': blogpost}
 	return render(request, 'blogs/delete_blogpost.html', context)
+
+def like_post(request, blogpost_id):
+	post = get_object_or_404(BlogPost, id=request.POST.get('blogpost_id'))
+	post.likes.add(request.user)
+	return HttpResponseRedirect(reverse('blogs:blogpost', args=[str(blogpost_id)]))
 
 
 
@@ -135,6 +141,7 @@ def delete_entry(request, entry_id):
 	# Display a blank or invalid form.
 	context = {'entry': entry, 'blogpost': blogpost}
 	return render(request, 'blogs/delete_entry.html', context)
+
 
 def check_topic_owner(owner, request):
 	if owner != request.user:
